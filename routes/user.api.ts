@@ -1,18 +1,18 @@
 import express from "express";
-import { createUser } from "../api/controllers/user/createUser";
 const router = express.Router();
+import { createUser } from "../api/controllers/user/createUser";
 import { body } from "express-validator";
 import { validate } from "../middlewares/validators";
 
 
-/**
- * @route POST /auth/login
- * @description Login with email and password
- * @body {email, password}
- * @access Login required
- */
 
-router.post(
+/**
+ * @route POST /users
+ * @description Register a new user
+ * @body {name, email, password}
+ * @access Public
+ */
+ router.post(
     "/",
 //   validate([
 //     body("name", "Invalid name").exists().notEmpty(),
@@ -25,5 +25,4 @@ router.post(
 
   createUser
 );
-
 export default router;
