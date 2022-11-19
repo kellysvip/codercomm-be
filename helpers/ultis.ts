@@ -4,7 +4,7 @@ export function sendResponse(
   res: Response,
   status: number,
   success: boolean,
-  data: Record<string, string | number | boolean>,
+  data: Record<string, string | number | boolean >,
   errors: Record<string, unknown> | null,
   message: string
 ) {

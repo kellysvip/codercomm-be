@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+const JWT_SECRET_KEY: string = "ygsdfjksgf67f3";
 
 const userSchema = new mongoose.Schema(
   {
@@ -13,6 +15,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      required: true,
       select: true,
     },
 
@@ -85,16 +88,33 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-
   },
   { timestamps: true }
 );
 
-userSchema.methods.toJSON = function() {
-  const user = this._doc
-  delete user.password
-  delete user.isDeleted
-  return user
-}
+userSchema.methods.toJSON = function () {
+  const user = this._doc;
+  delete user.password;
+  delete user.isDeleted;
+  return user;
+};
+
+// userSchema.method("toJSON",  function toJSON() {
+//   const user = this._doc;
+//   delete user.password;
+//   delete user.isDeleted;
+//   return user;
+// });
+
+userSchema.method("generateToken", async function generateToken() {
+  const accessToken: string = await jwt.sign(
+    { _id: this._id },
+    JWT_SECRET_KEY,
+    {
+      expiresIn: "1d",
+    }
+  );
+  return accessToken;
+});
 
 export const User = mongoose.model("User", userSchema);
