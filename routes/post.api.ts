@@ -1,4 +1,5 @@
 import express from "express";
+import { createPost } from "../api/controllers/post/createPost";
 const router = express.Router();
 
 /**
@@ -7,6 +8,7 @@ const router = express.Router();
  * @body {content, image}
  * @access Login required
  */
+ router.post("/", createPost)
 
 /**
  * @route DELETE /posts/:id

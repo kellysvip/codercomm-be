@@ -7,7 +7,7 @@ router.get("/", function (req, res, next) {
 });
 
 // authApi
-import authApi from './auth.api'
+import authApi from './user.api'
 router.use('/auth', authApi)
 
 // userApi
