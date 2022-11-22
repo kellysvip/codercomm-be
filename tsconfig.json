@@ -10,11 +10,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "compilerOptions": {
-      "strictPropertyInitialization": false,
-  },
+  //   "compilerOptions": {
+  //     "strictPropertyInitialization": false,
+  // },
     "rootDir": "./",
     "outDir": "dist"
   },
-  "include": ["./**/*.ts"]
+  "include": ["./**/*.ts", "bin/www.ts", "bin/www.ts"]
 }

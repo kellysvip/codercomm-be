@@ -1,9 +1,11 @@
 import express from "express";
-export const router = express.Router();
+
+const router = express.Router();
+export default router
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.status(200).send("Welcome to CoderSchool!");
+  res.status(200).send({ status: "ok", data: "Hello" });
 });
 
 // authApi
@@ -11,7 +13,7 @@ import authApi from './auth.api'
 router.use('/auth', authApi)
 
 // userApi
-import userApi from './auth.api'
+import userApi from './user.api'
 router.use('/users', userApi)
 
 // postuserApi
@@ -29,11 +31,6 @@ router.use('/reactions', reactionApi)
 // friendApi
 import friendApi from './friend.api'
 router.use('/friends', friendApi)
-
-
-
-
-
 
 /** 
 * @route POST /auth/login Log in with username and password

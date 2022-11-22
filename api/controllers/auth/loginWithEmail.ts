@@ -16,9 +16,9 @@ export const loginWithEmail = catchAsync(
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new AppError(400, "Wrong Password", "Login Error");
 
-    const accessToken = await user.generateToken()
+    // const accessToken = await user.generateToken()
 
     //Response
-    sendResponse(res, 200, true, {email, accessToken}, null, "Create User Success");
+    sendResponse(res, 200, true, {email}, null, "Login Success");
   }
 );

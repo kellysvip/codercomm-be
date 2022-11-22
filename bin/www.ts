@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-import {app} from '../app'
+import app from '../app'
 var debug = require('debug')('codercomm-be:server');
 import http from 'http'
 
