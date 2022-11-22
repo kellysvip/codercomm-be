@@ -1,9 +1,9 @@
 import { sendResponse, AppError } from "../helpers/ultis";
-import { validationResult } from "express-validator";
+import { ValidationChain, validationResult } from "express-validator";
 import { NextFunction, Request, Response } from "express";
 
 
-export const validate = (validationArray:Record<string , string>[]) =>async (req: Request, res: Response, next: NextFunction) => {
+export const validate = (validationArray:ValidationChain[]) =>async (req: Request, res: Response, next: NextFunction) => {
     await Promise.all(validationArray.map((validation) => {
         validation.run(req)
     }))
