@@ -15,7 +15,7 @@ export const createUser = catchAsync(
     password = await bcrypt.hash(password, salt)
     user = await User.create({ name, email, password })
 
-    const accessToken = await user.generateToken()
+    // const accessToken = await user.generateToken()  errorts
 
 
     //Response
@@ -23,7 +23,7 @@ export const createUser = catchAsync(
       res,
       200,
       true,
-      { name, email, accessToken },
+      { name, email },
       null,
       "Create User Success"
     );
