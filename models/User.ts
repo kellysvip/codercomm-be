@@ -2,28 +2,25 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 const JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY || "hdfgjhd";
 
-
 export interface IUser {
-  name: string
-  email: string
-  password?: string 
-avatarUrl?: string             
-coverUrl?: string
-aboutMe?: string
-city?: string
-country?: string
-company?: string
-jobTitle?: string
-facebookLink?: string
-instagramLink?: string
-linkedLink?: string
-twitterLink?: string
-isDeleted?: string
-friendCount?: string
-postCount?: number
-
-genera
-
+  name: string;
+  email: string;
+  password: string;
+  avatarUrl?: string;
+  coverUrl?: string;
+  aboutMe?: string;
+  city?: string;
+  country?: string;
+  company?: string;
+  jobTitle?: string;
+  facebookLink?: string;
+  instagramLink?: string;
+  linkedLink?: string;
+  twitterLink?: string;
+  isDeleted?: string;
+  friendCount?: string;
+  postCount?: number;
+  generateToken: () => Promise<string>;
 }
 
 const userSchema = new mongoose.Schema(
@@ -42,7 +39,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       select: true,
     },
-
     avatarUrl: {
       type: String,
       required: false,
