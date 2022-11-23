@@ -2,6 +2,16 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 const JWT_SECRET_KEY: string = "ygsdfjksgf67f3";
 
+export interface IUser {
+    name: string;
+    email: string;
+    password: string;
+    avatarUrl?: string;
+    coverUrl?: string;
+
+    generateToken: () => Promise<string>;
+}
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -18,7 +28,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       select: true,
     },
-
     avatarUrl: {
       type: String,
       required: false,
