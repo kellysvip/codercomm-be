@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
-
+import { FriendStatus } from "../constants/enums/friend-status.enum";
+export interface IFriend {
+  from: string;
+  to: string;
+  status: FriendStatus;
+}
 const friendSchema = new mongoose.Schema(
   {
     from: {
@@ -14,7 +19,7 @@ const friendSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "accepted", "declined"],
+      enum: Object.values(FriendStatus),
     },
   },
   { timestamps: true }

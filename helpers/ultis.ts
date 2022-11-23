@@ -1,16 +1,17 @@
 import { NextFunction, Request, Response } from "express";
+import { IUser } from "../models/User";
 
 export function sendResponse(
   res: Response,
   status: number,
   success: boolean,
-  data: Record<string, string | number | boolean >,
+  data: Record<string, unknown >,
   errors: Record<string, unknown> | null,
   message: string
 ) {
   const response: {
     success?: boolean;
-    data?: Record<string, string | number | boolean>;
+    data?: Record<string, unknown >;
     errors?: Record<string, unknown> | null;
     message?: string;
   } = {};
@@ -26,7 +27,6 @@ export const catchAsync = (func: Function) => (req: Request, res: Response, next
 
 export class AppError extends Error {
   public statusCode: number;
-//   public message: string;
   public errorType: string;
   // all errors using this class are operational errors.
   public isOperational = true;

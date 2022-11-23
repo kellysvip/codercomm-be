@@ -16,7 +16,7 @@ export const getCurrentUser = catchAsync(
       res,
       200,
       true,
-      {}, //user errorts
+      { user }, //user errorts
       null,
       "Get Current User Success"
     );

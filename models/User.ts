@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+import { IFriend } from "./Friend";
 const JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY || "hdfgjhd";
 
 export interface IUser {
+  _id: string;
   name: string;
   email: string;
   password: string;
@@ -21,6 +23,8 @@ export interface IUser {
   friendCount?: string;
   postCount?: number;
   generateToken: () => Promise<string>;
+  friendship: IFriend;
+  
 }
 
 const userSchema = new mongoose.Schema(
