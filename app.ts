@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Connect to MONGODB
 
 const mongoURI: string =
-  process.env.MONGODB_URI ||
+process.env.MONGODB_URI ||
   "mongodb+srv://admin:admin@cluster0.t244bsh.mongodb.net/coder_comm";
 
 mongoose
@@ -35,8 +35,10 @@ mongoose
   .catch((err: string) => console.log(err));
 
 //Error Handler
-app.use((req, res, next) => {
-  const err = createHttpError(httpStatus.NOT_FOUND, 'Not Found')
+app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
+  // const err = createHttpError(httpStatus.NOT_FOUND, 'Not Found')
+  err.statusCode = 404;;
+  err.message = "Not Found"
   next(err);
 });
 

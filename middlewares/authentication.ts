@@ -4,9 +4,15 @@ const JWT_SECRET_KEY = "dkhfgfdgdfhfdjgdf";
 
 import { AppError } from "../helpers/ultis";
 import { NextFunction, Request, Response } from "express";
+import { IGetUserAuthInfoRequest } from "../constants/requests/request-interface";
+
+
+interface IJWTPayload {
+  _id: string;
+}
 
 export const loginRequired = (
-  req: Request,
+  req: IGetUserAuthInfoRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -17,7 +23,7 @@ export const loginRequired = (
       throw new AppError(401, "Login Required", "Authentication Error");
 
     const token = tokenString.replace("Bearer ", "");
-    jwt.verify(token, JWT_SECRET_KEY, (err, payload) => {
+    jwt.verify(token, JWT_SECRET_KEY, (err, decoded) => {
       if (err) {
         if (err.name === "TokenExpiredError") {
           throw new AppError(401, "Token Expired", "Authentication Error");
@@ -25,7 +31,10 @@ export const loginRequired = (
           throw new AppError(401, "Token is Invalid", "Authentication Error");
         }
       }
-    //   req.userId = payload._id  errorts
+      const payload = decoded as IJWTPayload;
+      
+      req.userId = payload._id
+      
     });
     next()
   } catch (error) {

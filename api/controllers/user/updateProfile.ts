@@ -1,17 +1,17 @@
 import { Response, Request, NextFunction } from "express";
-import { User } from "../../../models/User";
+import { IUser, User } from "../../../models/User";
 import { sendResponse, AppError, catchAsync } from "../../../helpers/ultis";
 import bcrypt from "bcryptjs";
 
 export const updateProfile = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     //get data from request
-    const currentUserId = req.params.id; //req.userId validate
+    const currentUserId = "638106c7165bf365b93649ca"; //req.userId validate
     const userId = req.params.id;
 
     if (currentUserId !== userId)
       throw new AppError(400, "Permission Required", "Update User Error");
-    const user = await User.findById(userId);
+    const user = await User.findById(userId)
     if (!user) throw new AppError(400, "User not found", "Update User Error");
 
     const allows = [
@@ -38,6 +38,6 @@ export const updateProfile = catchAsync(
     //Process
 
     //Response
-    sendResponse(res, 200, true, {}, null, "Update User Success"); //{user}  errorts
+    sendResponse(res, 200, true, {user}, null, "Update User Success"); //{user}  errorts
   }
 );

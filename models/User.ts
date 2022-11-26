@@ -23,8 +23,8 @@ export interface IUser {
   friendCount?: string;
   postCount?: number;
   generateToken: () => Promise<string>;
+  toJSON: () => IUser;
   friendship: IFriend;
-  
 }
 
 const userSchema = new mongoose.Schema(
@@ -120,6 +120,12 @@ userSchema.methods.toJSON = function () {
   const user = this._doc;
   delete user.password;
   delete user.isDeleted;
+  return user;
+};
+
+userSchema.methods.map = function () {
+  const user = this._doc;
+  
   return user;
 };
 

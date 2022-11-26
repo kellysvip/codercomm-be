@@ -2,11 +2,12 @@ import { Response, Request, NextFunction } from "express";
 import { IUser, User } from "../../../models/User";
 import { sendResponse, AppError, catchAsync } from "../../../helpers/ultis";
 import { Friend, IFriend } from "../../../models/Friend";
+import { IGetUserAuthInfoRequest } from "../../../constants/requests/request-interface";
 
 export const getSingleUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) => {
     //get data from request
-    const currentUserId = req.params; //req.userId validate
+    const currentUserId = "638106c7165bf365b93649ca"; //req.userId validate
     const userId = req.params.id;
 
     const user = await User.findById(userId) as IUser
@@ -20,13 +21,13 @@ export const getSingleUser = catchAsync(
         { from: user._id, to: currentUserId },
       ],
     }) as IFriend
-
+    const friendship = user.friendship
     //Response
     sendResponse(
       res,
       200,
       true,
-      {}, //user errorts
+      {user,friendship}, 
       null,
       "Get Single User Success"
     );
