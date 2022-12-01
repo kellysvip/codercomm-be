@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import { FriendStatus } from "../constants/enums/friend-status.enum";
 export interface IFriend {
-  from: string;
-  to: string;
+  from: mongoose.Schema.Types.ObjectId;
+  to: mongoose.Schema.Types.ObjectId;
   status: FriendStatus;
 }
 const friendSchema = new mongoose.Schema(

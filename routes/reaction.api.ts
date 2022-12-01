@@ -1,4 +1,8 @@
 import express from "express";
+import { body } from "express-validator";
+import { saveReaction } from "../api/controllers/reaction/saveReaction";
+import { checkObjectId } from "../middlewares/checkObjectId";
+import { validate } from "../middlewares/validators";
 const router = express.Router();
 
 /**
@@ -7,5 +11,15 @@ const router = express.Router();
  * @body {targetType: 'Post' or 'Comment', targetId, emoji}
  * @access Login required
  */
+
+router.post(
+  "/",
+  validate([
+    body("targetType", "Invalid targetType").exists().isIn(["Post", "Comment"]),
+    body("targetId", "Invalid targetId").exists().custom(checkObjectId),
+    body("emoji", "Invalid emoji").isIn(["like", "dislike"]),
+  ]),
+  saveReaction
+);
 
 export default router;

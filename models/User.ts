@@ -125,16 +125,10 @@ userSchema.methods.toJSON = function () {
 
 userSchema.methods.map = function () {
   const user = this._doc;
-  
   return user;
 };
 
-// userSchema.method("toJSON",  function toJSON() {
-//   const user = this._doc;
-//   delete user.password;
-//   delete user.isDeleted;
-//   return user;
-// });
+
 
 userSchema.method("generateToken", async function generateToken() {
   const accessToken: string = await jwt.sign(
