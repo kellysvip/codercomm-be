@@ -3,7 +3,7 @@ const router = express.Router();
 import { loginWithEmail } from "../api/controllers/auth/loginWithEmail";
 import { body } from "express-validator";
 import { validate } from "../middlewares/validators";
-
+import { loginRequired } from "../middlewares/authentication";
 
 /**
  * @route POST /auth/login
@@ -14,15 +14,15 @@ import { validate } from "../middlewares/validators";
 
 router.post(
   "/login",
-    validate([
-      body("email", "Invalid email")
-        .exists()
-        .isEmail()
-        .normalizeEmail({ gmail_remove_dots: false }),
-      body("password", "Invalid password").exists().notEmpty(),
-    ]),
+  validate([
+    body("email", "Invalid email")
+      .exists()
+      .isEmail()
+      .normalizeEmail({ gmail_remove_dots: false }),
+    body("password", "Invalid password").exists().notEmpty(),
+  ]),
+  
   loginWithEmail
 );
-
 
 export default router;

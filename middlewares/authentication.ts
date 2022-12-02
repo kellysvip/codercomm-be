@@ -4,12 +4,13 @@ const JWT_SECRET_KEY = "dkhfgfdgdfhfdjgdf";
 
 import { AppError } from "../helpers/ultis";
 import { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
 import { IGetUserAuthInfoRequest } from "../constants/requests/request-interface";
 
-
 interface IJWTPayload {
-  _id: string;
+  _id: mongoose.Types.ObjectId;
 }
+
 
 export const loginRequired = (
   req: IGetUserAuthInfoRequest,
@@ -32,11 +33,10 @@ export const loginRequired = (
         }
       }
       const payload = decoded as IJWTPayload;
-      
+      console.log(payload._id);
       req.userId = payload._id
-      
     });
-    next()
+    next();
   } catch (error) {
     next(error);
   }
