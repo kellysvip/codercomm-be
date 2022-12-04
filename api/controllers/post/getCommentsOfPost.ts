@@ -1,27 +1,28 @@
 import { Response, NextFunction, Request } from "express";
 import { sendResponse, AppError, catchAsync } from "../../../helpers/ultis";
-import { IGetUserAuthInfoRequest } from "../../../constants/requests/request-interface";
+import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 import { Comment } from "../../../models/Comment";
 import { IPost, Post } from "../../../models/Post";
-
-interface Page {
-  page: number;
-  limit: number;
-  name: string;
-  id: string;
-}
+import { IGetPostQuery } from "../../../constants/interfaces/query.interface";
 
 export const getCommentsOfPost = catchAsync(
-  async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) => {
+  async (
+    req: Request<{ postId: string }, any, {}, IGetPostQuery> & {
+      userId: string;
+    },
+    res: Response,
+    next: NextFunction
+  ) => {
     //get data from request
-    const currentUserId = "638106c7165bf365b93649ca"; //req.userId validate
-    const postId = req.params.id;
+    const currentUserId = req.userId;
+    const {
+      params: { postId },
+    } = req;
+    let { page, limit, ...filter } = { ...req.query };
 
-    // const page = parseInt(req.query.page) || 1;
-    // const limit = parseInt(req.query.limit) || 1
-    console.log(postId);
-    const page = 1;
-    const limit = 10;
+    page = page || 1;
+    limit = limit || 10;
+    
     // Validate post exists
     let post = (await Post.findById(postId)) as IPost;
     if (!post)

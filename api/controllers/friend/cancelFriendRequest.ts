@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { sendResponse, catchAsync, AppError } from "../../../helpers/ultis";
-import { IGetUserAuthInfoRequest } from "../../../constants/requests/request-interface";
+import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 import { Friend } from "../../../models/Friend";
 
 export const cancelFriendRequest = catchAsync(

@@ -2,16 +2,30 @@ import { Response, Request, NextFunction } from "express";
 import { IUser, User } from "../../../models/User";
 import { sendResponse, AppError, catchAsync } from "../../../helpers/ultis";
 import bcrypt from "bcryptjs";
-
+import { IGetPostQuery } from "../../../constants/interfaces/query.interface";
+// type UserWithoutFunction = Omit<
+//   IUser,
+//   "save" | "toJSON" | "generateToken" | "friendship"
+// >;
 export const updateProfile = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (
+    req: Request<{ userId: string }, {}, any, IGetPostQuery> & {
+      userId: string;
+    },
+    res: Response,
+    next: NextFunction
+  ) => {
     //get data from request
-    const currentUserId = "638106c7165bf365b93649ca"; //req.userId validate
-    const userId = req.params.id;
+    const currentUserId = req.userId; //req.userId validate
+
+    const {
+      params: { userId },
+    } = req;
 
     if (currentUserId !== userId)
       throw new AppError(400, "Permission Required", "Update User Error");
-    const user = await User.findById(userId)
+
+    const user = (await User.findById(userId)) as IUser;
     if (!user) throw new AppError(400, "User not found", "Update User Error");
 
     const allows = [
@@ -25,19 +39,17 @@ export const updateProfile = catchAsync(
       "jobTitle",
       "facebookLink",
       "instagramLink",
-      "linkedinLink",
       "twitterLink",
     ];
-    allows.forEach((field: string) => {
+    allows.forEach((field) => {
       if (req.body[field] !== undefined) {
-        // user[field] = req.body[field];  errorts
+        (user as any)[field] = req.body[field];
       }
     });
     await user.save();
 
-    //Process
 
     //Response
-    sendResponse(res, 200, true, {user}, null, "Update User Success"); //{user}  errorts
+    sendResponse(res, 200, true, { user }, null, "Update User Success"); 
   }
 );

@@ -2,13 +2,13 @@ import { Response, Request, NextFunction } from "express";
 import { IUser, User } from "../../../models/User";
 import { sendResponse, AppError, catchAsync } from "../../../helpers/ultis";
 import { Friend, IFriend } from "../../../models/Friend";
-import { IGetUserAuthInfoRequest } from "../../../constants/requests/request-interface";
+import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 
 export const getSingleUser = catchAsync(
   async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) => {
     //get data from request
-    const currentUserId = "638106c7165bf365b93649ca"; //req.userId validate
-    const userId = req.params.id;
+    const currentUserId = req.userId
+    const userId = req.params.userId;
 
     const user = await User.findById(userId) as IUser
     if (!user)

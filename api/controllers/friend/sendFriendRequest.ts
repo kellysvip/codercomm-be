@@ -1,9 +1,8 @@
 import { Response, NextFunction } from "express";
 import { sendResponse, catchAsync, AppError } from "../../../helpers/ultis";
-import { IGetUserAuthInfoRequest } from "../../../constants/requests/request-interface";
+import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 import { User } from "../../../models/User";
 import { Friend, IFriend } from "../../../models/Friend";
-import mongoose from "mongoose";
 import { FriendStatus } from "../../../constants/enums/friend-status.enum";
 
 export const sendFriendRequest = catchAsync(

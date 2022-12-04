@@ -18,6 +18,7 @@ import { checkObjectId } from "../middlewares/checkObjectId";
  */
 router.post(
   "/",
+  loginRequired,
   validate([
     body("name", "Invalid name").exists().notEmpty(),
     body("email", "Invalid email")
@@ -35,11 +36,7 @@ router.post(
  * @access Login required
  */
 
-router.get(
-  "/",
-  // loginRequired,
-  getUsers
-);
+router.get("/", loginRequired, getUsers);
 
 /**
  * @route GET /users/me
@@ -47,11 +44,7 @@ router.get(
  * @access Login required
  */
 
-router.get(
-  "/me",
-  // loginRequired,
-  getCurrentUser
-);
+router.get("/me", loginRequired, getCurrentUser);
 
 /**
  * @route GET /users/:id
@@ -60,8 +53,9 @@ router.get(
  */
 
 router.get(
-  "/:id",
-  validate([param("id").exists().isString().custom(checkObjectId)]),
+  "/:userId",
+  loginRequired,
+  validate([param("userId").exists().isString().custom(checkObjectId)]),
   getSingleUser
 );
 
@@ -72,10 +66,12 @@ router.get(
  * @access Login required
  */
 
-router.put("/:id", 
-validate([param("id").exists().isString().custom(checkObjectId)]),
-
-updateProfile);
+router.put(
+  "/:userId",
+  loginRequired,
+  validate([param("userId").exists().isString().custom(checkObjectId)]),
+  updateProfile
+);
 
 /**
  * @route DELETE /users/:id

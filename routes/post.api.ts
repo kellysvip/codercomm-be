@@ -6,6 +6,7 @@ import { getCommentsOfPost } from "../api/controllers/post/getCommentsOfPost";
 import { getPosts } from "../api/controllers/post/getPosts";
 import { getSinglePost } from "../api/controllers/post/getSinglePost";
 import { updatePost } from "../api/controllers/post/updatePost";
+import { loginRequired } from "../middlewares/authentication";
 import { checkObjectId } from "../middlewares/checkObjectId";
 import { validate } from "../middlewares/validators";
 const router = express.Router();
@@ -29,6 +30,7 @@ router.get(
  */
 router.post(
   "/",
+  loginRequired,
   validate([body("content", "Missing content").exists().notEmpty()]),
   createPost
 );
@@ -38,22 +40,22 @@ router.post(
  * @description Delete a post
  * @access Login required
  */
-router.delete(
-  "/:id",
-  validate([body("content", "Missing content").exists().notEmpty()]),
-  deletePost
-);
+router.delete("/:postId", loginRequired, deletePost);
 
 /**
- * @route PUT /posts
+ * @route PUT /posts/:id
  * @description Update a post
  * @body {content, image}
  * @access Login required
  */
 
 router.put(
-  "/:id",
-  validate([body("content", "Missing content").exists().notEmpty()]),
+  "/:postId",
+  loginRequired,
+  validate([
+    body("content", "Missing content").exists(),
+    param("userId").exists().isString().custom(checkObjectId),
+  ]),
   updatePost
 );
 
@@ -63,8 +65,9 @@ router.put(
  * @access Login required
  */
 router.get(
-  "/:id",
-  validate([param("id").exists().isString().custom(checkObjectId)]),
+  "/:postId",
+  loginRequired,
+  validate([param("postId").exists().isString().custom(checkObjectId)]),
   getSinglePost
 );
 
@@ -74,8 +77,9 @@ router.get(
  * @access Login required
  */
 router.get(
-  "/:id/comments",
-  validate([param("id").exists().isString().custom(checkObjectId)]),
+  "/:postId/comments",
+  loginRequired,
+  validate([param("postId").exists().isString().custom(checkObjectId)]),
   getCommentsOfPost
 );
 

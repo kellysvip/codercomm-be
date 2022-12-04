@@ -1,25 +1,19 @@
 import jwt from "jsonwebtoken";
-// const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY
-const JWT_SECRET_KEY = "dkhfgfdgdfhfdjgdf";
-
 import { AppError } from "../helpers/ultis";
 import { NextFunction, Request, Response } from "express";
-import mongoose from "mongoose";
-import { IGetUserAuthInfoRequest } from "../constants/requests/request-interface";
-
+import { JWT_SECRET_KEY } from "../models/User";
 interface IJWTPayload {
-  _id: mongoose.Types.ObjectId;
+  _id: string;
 }
 
 
 export const loginRequired = (
-  req: IGetUserAuthInfoRequest,
+  req: Request & { userId?: string },
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const tokenString = req.headers["www-authenticate"];
-    console.log(tokenString);
+    const tokenString = req.headers["authorization"];
     if (!tokenString)
       throw new AppError(401, "Login Required", "Authentication Error");
 
@@ -33,9 +27,9 @@ export const loginRequired = (
         }
       }
       const payload = decoded as IJWTPayload;
-      console.log(payload._id);
-      req.userId = payload._id
+      req.userId = payload._id;
     });
+    
     next();
   } catch (error) {
     next(error);

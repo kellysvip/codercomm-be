@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { IFriend } from "./Friend";
-const JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY || "hdfgjhd";
+export const JWT_SECRET_KEY: string = process.env.JWT_SECRET_KEY || "hdfgjhd";
 
 export interface IUser {
   _id: string;
@@ -25,6 +25,7 @@ export interface IUser {
   generateToken: () => Promise<string>;
   toJSON: () => IUser;
   friendship: IFriend;
+  save: () => Promise<IUser>
 }
 
 const userSchema = new mongoose.Schema(
@@ -123,10 +124,6 @@ userSchema.methods.toJSON = function () {
   return user;
 };
 
-userSchema.methods.map = function () {
-  const user = this._doc;
-  return user;
-};
 
 
 

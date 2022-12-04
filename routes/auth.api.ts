@@ -9,11 +9,11 @@ import { loginRequired } from "../middlewares/authentication";
  * @route POST /auth/login
  * @description Login with email and password
  * @body {email, password}
- * @access Login required
+ * @access Public
  */
 
 router.post(
-  "/login",
+  "/login", 
   validate([
     body("email", "Invalid email")
       .exists()

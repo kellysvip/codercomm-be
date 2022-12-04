@@ -1,19 +1,19 @@
 import { Response, NextFunction, Request } from "express";
 import { sendResponse, catchAsync } from "../../../helpers/ultis";
-import { IGetUserAuthInfoRequest } from "../../../constants/requests/request-interface";
+import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 import { Friend } from "../../../models/Friend";
 import { IUser, User } from "../../../models/User";
 import { FilterQuery } from "mongoose";
-
-interface Page {
-  page: number;
-  limit: number;
-  name: string;
-  userId: string;
-}
+import { IGetPostQuery } from "../../../constants/interfaces/query.interface";
 
 export const getFriendList = catchAsync(
-  async (req: Request<{}, {}, {}, Page>, res: Response, next: NextFunction) => {
+  async (
+    req: Request<{ userId: string }, any, {}, IGetPostQuery> & {
+      userId: string;
+    },
+    res: Response,
+    next: NextFunction
+  ) => {
     let { page, limit, ...filter } = req.query;
 
     let currentUserId: any = {};
@@ -29,7 +29,6 @@ export const getFriendList = catchAsync(
       if (friend.from._id.equals(currentUserId)) return friend.to;
       return friend.from;
     });
-
 
     let filterConditions = [{ _id: { $in: friendIDs } }] as FilterQuery<IUser>;
 

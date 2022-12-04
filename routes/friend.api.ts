@@ -7,6 +7,7 @@ import { getSentFriendRequestList } from "../api/controllers/friend/getSentFrien
 import { reactFriendRequest } from "../api/controllers/friend/reactFriendRequest";
 import { removeFriend } from "../api/controllers/friend/removeFriend";
 import { sendFriendRequest } from "../api/controllers/friend/sendFriendRequest";
+import { loginRequired } from "../middlewares/authentication";
 import { checkObjectId } from "../middlewares/checkObjectId";
 import { validate } from "../middlewares/validators";
 const router = express.Router();
@@ -17,7 +18,7 @@ const router = express.Router();
  * @body {to: User ID}
  * @access Login required
  */
- router.post("/requests", validate([
+ router.post("/requests", loginRequired,validate([
     body("to").exists().isString().custom(checkObjectId)
  ]), sendFriendRequest)
 
@@ -27,7 +28,7 @@ const router = express.Router();
  * @access Login required
  */
 
- router.get("/requests/incoming", getReceivedFriendRequestList)
+ router.get("/requests/incoming",loginRequired, getReceivedFriendRequestList)
 
 /**
  * @route GET /friends/requests/outgoing
@@ -35,7 +36,7 @@ const router = express.Router();
  * @access Login required
  */
 
- router.get("/requests/outgoing", getSentFriendRequestList)
+ router.get("/requests/outgoing",loginRequired, getSentFriendRequestList)
 
 
 /**
@@ -44,7 +45,7 @@ const router = express.Router();
  * @access Login required
  */
 
- router.get("/requests", getFriendList)
+ router.get("/requests",loginRequired, getFriendList)
 
 
 /**
@@ -53,7 +54,7 @@ const router = express.Router();
  * @body {ststus: 'acepted' or 'decline} 
  * @access Login required
  */
- router.put("/requests/:userId", validate([
+ router.put("/requests/:userId",loginRequired, validate([
     body("status").exists().isString().isIn(["accepted", "declined"]),
     param("userId").exists().isString().custom(checkObjectId)
  ]), reactFriendRequest)
@@ -65,7 +66,7 @@ const router = express.Router();
  * @access Login required
  */
 
- router.delete("/requests/:userId", validate([
+ router.delete("/requests/:userId",loginRequired, validate([
     param("userId").exists().isString().custom(checkObjectId)
  ]), cancelFriendRequest)
 
@@ -75,7 +76,7 @@ const router = express.Router();
  * @description Remove a friend
  * @access Login required
  */
- router.delete("/:userId", validate([
+ router.delete("/:userId",loginRequired, validate([
     param("userId").exists().isString().custom(checkObjectId)
  ]), removeFriend)
 

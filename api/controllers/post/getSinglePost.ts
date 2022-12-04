@@ -2,15 +2,21 @@ import { Response, Request, NextFunction } from "express";
 import { IUser, User } from "../../../models/User";
 import { sendResponse, AppError, catchAsync } from "../../../helpers/ultis";
 import { Friend, IFriend } from "../../../models/Friend";
-import { IGetUserAuthInfoRequest } from "../../../constants/requests/request-interface";
+import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 import { IPost, Post } from "../../../models/Post";
 import { Comment } from "../../../models/Comment";
+import { IGetPostQuery } from "../../../constants/interfaces/query.interface";
 
 export const getSinglePost = catchAsync(
-  async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) => {
+  async (req: Request<{ postId: string }, any, {}, IGetPostQuery> & {
+    userId: string;
+  }, res: Response, next: NextFunction) => {
     //get data from request
-    const currentUserId = "638106c7165bf365b93649ca"; //req.userId validate
-    const postId = req.params.id;
+    const currentUserId = req.userId; 
+    console.log(currentUserId);
+    const {
+      params: { postId },
+    } = req;
 
     let post = await Post.findById(postId) as IPost
     if (!post)

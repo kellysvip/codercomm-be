@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import mongoose, { Types } from "mongoose";
-import { IGetUserAuthInfoRequest } from "../../../constants/requests/request-interface";
+import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 import { sendResponse, AppError, catchAsync } from "../../../helpers/ultis";
 import { Reaction } from "../../../models/Reaction";
 
@@ -39,7 +39,7 @@ export const calculateReactionCount = async (
 export const saveReaction = catchAsync(
   async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) => {
     //get data from request
-    const currentUserId = "638106c7165bf365b93649ca"; //errorts  req.userId
+    const currentUserId = req.userId; //errorts  req.userId
 
     const { targetType, targetId, emoji } = req.body;
 

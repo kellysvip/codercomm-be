@@ -7,7 +7,6 @@ export const createUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     //get data from request
     let { name, email, password } = req.body;
-    console.log(name, email, password);
     //Validation
     let user = (await User.findOne({ email })) as IUser;
     if (user)

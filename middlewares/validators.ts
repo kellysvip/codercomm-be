@@ -5,13 +5,8 @@ import { NextFunction, Request, Response } from "express";
 export const validate =
   (validationArray: ValidationChain[]) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    await Promise.all(
-      validationArray.map((validation) => 
-        validation.run(req)
-      )
-    );
-    const errors = validationResult(req); 
-    console.log("errors ", errors);
+    await Promise.all(validationArray.map((validation) => validation.run(req)));
+    const errors = validationResult(req);
 
     if (errors.isEmpty()) return next();
 

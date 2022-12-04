@@ -1,13 +1,22 @@
-import { Response, NextFunction } from "express";
-import { IGetUserAuthInfoRequest } from "../../../constants/requests/request-interface";
+import { Response, NextFunction, Request } from "express";
+import { IGetPostQuery } from "../../../constants/interfaces/query.interface";
+import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 import { sendResponse, AppError, catchAsync } from "../../../helpers/ultis";
 import { Post } from "../../../models/Post";
 
 export const updatePost = catchAsync(
-  async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) => {
+  async (
+    req: Request<{ postId: string }, {}, any, IGetPostQuery> & {
+      userId: string;
+    },
+    res: Response,
+    next: NextFunction
+  ) => {
     //get data from request
-    const currentUserId = "638106c7165bf365b93649ca"; //errorts  req.userId
-    const postId = req.params.id;
+    const currentUserId = req.userId; //errorts  req.userId
+    const {
+      params: { postId },
+    } = req;
 
     let post = await Post.findById(postId);
     if (!post) throw new AppError(404, "Post not found", "Update Error");
@@ -17,7 +26,7 @@ export const updatePost = catchAsync(
     const allows = ["content", "image"];
     allows.forEach((field) => {
       if (req.body[field] !== undefined) {
-        // post[field] = req.body[field]
+        (post as any)[field] = req.body[field];
       }
     });
     await post.save();

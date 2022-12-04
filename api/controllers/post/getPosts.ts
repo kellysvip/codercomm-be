@@ -1,28 +1,26 @@
 import { Response, Request, NextFunction } from "express";
 import { IUser, User } from "../../../models/User";
 import { sendResponse, AppError, catchAsync } from "../../../helpers/ultis";
-import bcrypt from "bcryptjs";
-import QueryString from "querystring";
-import { Friend, IFriend } from "../../../models/Friend";
-import { Document, FilterQuery } from "mongoose";
+import { Friend } from "../../../models/Friend";
+import mongoose, { FilterQuery } from "mongoose";
 import { Post } from "../../../models/Post";
 import { Types } from "mongoose";
-
-interface Page {
-  page: number;
-  limit: number;
-  name: string;
-  userId: string;
-}
+import { IGetPostQuery } from "../../../constants/interfaces/query.interface";
 
 export const getPosts = catchAsync(
-  async (req: Request<{}, {}, {}, Page>, res: Response, next: NextFunction) => {
+  async (
+    req: Request<{ userId: string }, any, {}, IGetPostQuery> & {
+      userId: string;
+    },
+    res: Response,
+    next: NextFunction
+  ) => {
     //get data from request
-    const currentUserId = "638106c7165bf365b93649ca"; //req.userId validate
+    const currentUserId = req.userId; //req.userId validate
 
-    let userId: any = {};
-    userId = req.params;
-    userId = userId.userId;
+    const {
+      params: { userId },
+    } = req;
 
     let { page, limit, ...filter } = { ...req.query };
 
@@ -46,7 +44,10 @@ export const getPosts = catchAsync(
     } else {
       userFriendIDsAuth = [];
     }
-    userFriendIDsAuth = [...userFriendIDsAuth, userId];
+    userFriendIDsAuth = [
+      ...userFriendIDsAuth,
+      userId as unknown as mongoose.Types.ObjectId,
+    ];
 
     let filterConditions = [] as FilterQuery<IUser>;
     filterConditions = [

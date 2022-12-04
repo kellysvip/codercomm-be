@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-import { IGetUserAuthInfoRequest } from "../../../constants/requests/request-interface";
+import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 import { sendResponse, AppError, catchAsync } from "../../../helpers/ultis";
 import { Post } from "../../../models/Post";
 import { IUser, User } from "../../../models/User";
@@ -13,9 +13,9 @@ export const calculatePostCount = async (userId: string) => {
 };
 
 export const createPost = catchAsync(
-  async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) => {
+  async (req: Request & { userId?: string }, res: Response, next: NextFunction) => {
     //get data from request
-    const currentUserId = "638106c7165bf365b93649ca"; //errorts  req.userId
+    const currentUserId = req.userId; 
     const { content, image } = req.body;
 
     let post = await Post.create({
@@ -23,7 +23,7 @@ export const createPost = catchAsync(
       image,
       author: currentUserId,
     });
-    await calculatePostCount(currentUserId)
+    await calculatePostCount(currentUserId!)
     post = await post.populate("author");
 
     

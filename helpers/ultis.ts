@@ -22,7 +22,7 @@ export function sendResponse(
   return res.status(status).json(response);
 }
 export const catchAsync = (func: Function) => (req: Request, res: Response, next: NextFunction ) => {
-    func(req, res, next).catch((err: string) => next(err))
+    func(req, res, next).catch((err: Error) => res.status(500).json({errMessage: err.message}))
 }
 
 export class AppError extends Error {

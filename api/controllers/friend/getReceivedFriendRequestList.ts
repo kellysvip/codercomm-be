@@ -1,18 +1,16 @@
 import { Response, Request, NextFunction } from "express";
 import { FilterQuery } from "mongoose";
+import { IGetPostQuery } from "../../../constants/interfaces/query.interface";
 import { sendResponse, catchAsync } from "../../../helpers/ultis";
 import { Friend, IFriend } from "../../../models/Friend";
 import { IUser, User } from "../../../models/User";
 
-interface Page {
-  page: number;
-  limit: number;
-  name: string;
-  userId: string;
-}
+
 
 export const getReceivedFriendRequestList = catchAsync(
-  async (req: Request<{}, {}, {}, Page>, res: Response, next: NextFunction) => {
+  async (req: Request<{ userId: string }, any, {}, IGetPostQuery> & {
+    userId: string;
+  }, res: Response, next: NextFunction) => {
     let { page, limit, ...filter } = req.query;
 
     let currentUserId: any = {};
