@@ -32,6 +32,6 @@ export const updatePost = catchAsync(
     await post.save();
 
     //Response
-    sendResponse(res, 200, true, { post }, null, "Create Post Success");
+    sendResponse(res, 200, true, { post }, null, "Update Post Success");
   }
 );

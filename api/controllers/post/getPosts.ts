@@ -81,7 +81,7 @@ export const getPosts = catchAsync(
       true,
       { posts, totalPage, count },
       null,
-      "Get User Success"
+      "Get All Post User Can See Success"
     ); //errorts
   }
 );

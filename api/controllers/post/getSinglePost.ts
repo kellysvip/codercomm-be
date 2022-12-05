@@ -33,7 +33,7 @@ export const getSinglePost = catchAsync(
       true,
       {post}, 
       null,
-      "Get Single User Success"
+      "Get Single Post Success"
     );
   }
 );
