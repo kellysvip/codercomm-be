@@ -1,17 +1,20 @@
-import express, { Errback, ErrorRequestHandler } from "express";
+import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import cors from "cors";
-const indexRouter = require("./routes/index");
-// import indexRouter from './routes/index'
+// const indexRouter = require("./routes/index");
+import router from "./routes/index";
 import { NextFunction, Request, Response } from "express";
 
 import mongoose from "mongoose";
 import { AppError, sendResponse } from "./helpers/ultis";
+import createHttpError from 'http-errors'
+import httpStatus from "http-status";
+
 require("dotenv/config");
 
-export const app = express();
+const app = express();
 
 app.use(cors());
 app.use(logger("dev"));
@@ -22,25 +25,24 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Connect to MONGODB
 
-// const mongoURI = 'mongodb+srv://admin:admin@cluster0.t244bsh.mongodb.net/coder_management'
-// const mongoURI: string | undefined = process.env.MONGODB_URI
 const mongoURI: string =
-  "mongodb+srv://admin:admin@cluster0.t244bsh.mongodb.net/coder_management";
+process.env.MONGODB_URI ||
+  "mongodb+srv://admin:admin@cluster0.t244bsh.mongodb.net/coder_comm";
+
 mongoose
   .connect(mongoURI)
   .then(async () => console.log(`DB connected ${mongoURI}`))
   .catch((err: string) => console.log(err));
 
 //Error Handler
-// app.unsubscribe((req: Request, res: Response, next: NextFunction )) => {  }
-
-app.use((req, res, next) => {
-  const err = new Error("Not Found");
-  err.message = "404";
+app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
+  // const err = createHttpError(httpStatus.NOT_FOUND, 'Not Found')
+  err.statusCode = 404;;
+  err.message = "Not Found"
   next(err);
 });
 
-app.use((err: AppError , req: Request, res: Response, next: NextFunction) => {
+app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
   console.log("ERROR", err);
   if (err.isOperational) {
     return sendResponse(
@@ -63,4 +65,11 @@ app.use((err: AppError , req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-app.use("/api", indexRouter);
+app.use("/api", router);
+
+export default app;
+module.exports = app;
+function createError(arg0: number, arg1: string) {
+  throw new Error("Function not implemented.");
+}
+
