@@ -25,6 +25,7 @@ export const getUsers = catchAsync(
     if (filter.name) {
       filterConditions.push({
         name: { $regex: filter.name, $options: "i" },
+
       });
     }
 

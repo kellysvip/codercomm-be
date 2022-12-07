@@ -16,5 +16,5 @@
     "rootDir": "./",
     "outDir": "dist"
   },
-  "include": ["./**/*.ts", "bin/www.ts", "bin/www.ts"]
+  "include": ["./**/*.ts", "bin/www.ts", "bin/www.ts", "api/controllers/user/user_tests/createUser.test.ts"]
 }

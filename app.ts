@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const mongoURI: string =
 process.env.MONGODB_URI ||
-  "mongodb+srv://admin:admin@cluster0.t244bsh.mongodb.net/coder_comm";
+  "mongodb+srv://admin:admin@cluster0.t244bsh.mongodb.net/coder_comm_test";
 
 mongoose
   .connect(mongoURI)
@@ -69,7 +69,5 @@ app.use("/api", router);
 
 export default app;
 module.exports = app;
-function createError(arg0: number, arg1: string) {
-  throw new Error("Function not implemented.");
-}
+
 

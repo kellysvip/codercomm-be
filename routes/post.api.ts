@@ -54,7 +54,7 @@ router.put(
   loginRequired,
   validate([
     body("content", "Missing content").exists(),
-    param("userId").exists().isString().custom(checkObjectId),
+    param("postId").exists().isString().custom(checkObjectId),
   ]),
   updatePost
 );

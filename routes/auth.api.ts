@@ -13,7 +13,7 @@ import { loginRequired } from "../middlewares/authentication";
  */
 
 router.post(
-  "/login", 
+  "/login",
   validate([
     body("email", "Invalid email")
       .exists()
@@ -21,7 +21,7 @@ router.post(
       .normalizeEmail({ gmail_remove_dots: false }),
     body("password", "Invalid password").exists().notEmpty(),
   ]),
-  
+
   loginWithEmail
 );
 

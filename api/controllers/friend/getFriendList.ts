@@ -1,6 +1,5 @@
 import { Response, NextFunction, Request } from "express";
 import { sendResponse, catchAsync } from "../../../helpers/ultis";
-import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 import { Friend } from "../../../models/Friend";
 import { IUser, User } from "../../../models/User";
 import { FilterQuery } from "mongoose";

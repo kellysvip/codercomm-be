@@ -18,7 +18,7 @@ export const reactFriendRequest = catchAsync(
     const currentUserId = req.userId; // To
     const fromUserId = req.params.userId; //From
     const { status } = req.body;
-
+    console.log(currentUserId, fromUserId);
     let friend = await Friend.findOne({
       from: fromUserId,
       to: currentUserId,

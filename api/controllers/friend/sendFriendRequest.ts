@@ -2,14 +2,15 @@ import { Response, NextFunction } from "express";
 import { sendResponse, catchAsync, AppError } from "../../../helpers/ultis";
 import { IGetUserAuthInfoRequest } from "../../../constants/interfaces/request.interface";
 import { User } from "../../../models/User";
-import { Friend, IFriend } from "../../../models/Friend";
+import { Friend } from "../../../models/Friend";
 import { FriendStatus } from "../../../constants/enums/friend-status.enum";
 
 export const sendFriendRequest = catchAsync(
   async (req: IGetUserAuthInfoRequest, res: Response, next: NextFunction) => {
     const currentUserId = req.userId;
     const toUserId = req.body.to;
-
+    if (currentUserId === toUserId)
+      throw new AppError(400, "Error", "Send Friend Request Error");
     const user = await User.findById(toUserId);
     if (!user)
       throw new AppError(400, "User not found", "Send Friend Request Error");
